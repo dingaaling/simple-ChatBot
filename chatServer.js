@@ -1,7 +1,8 @@
 /*
 chatServer.js
 Author: David Goedicke (da.goedicke@gmail.com)
-Closley based on work from Nikolas Martelaro (nmartelaro@gmail.com) as well as Captain Anonymous (https://codepen.io/anon/pen/PEVYXz) who forked of an original work by Ian Tairea (https://codepen.io/mrtairea/pen/yJapwv)
+Modified by : Jennifer Ding (jd953) Lab 1
+Closely based on work from Nikolas Martelaro (nmartelaro@gmail.com) as well as Captain Anonymous (https://codepen.io/anon/pen/PEVYXz) who forked of an original work by Ian Tairea (https://codepen.io/mrtairea/pen/yJapwv)
 */
 
 var express = require('express'); // web server application
@@ -30,7 +31,7 @@ io.on('connect', function(socket) {
   var questionNum = 0; // keep count of question, used for IF condition.
   socket.on('loaded', function(){// we wait until the client has loaded and contacted us that it is ready to go.
 
-  socket.emit('answer',"Hey, Hello I am \"___*-\" a simple chat bot example."); //We start with the introduction;
+  socket.emit('answer',"Hey, Hello I am BroBot a simple chat bot that can help make your dates great."); //We start with the introduction;
   setTimeout(timedQuestion, 2500, socket,"What is your Name?"); // Wait a moment and respond with a question.
 
 });
@@ -51,40 +52,44 @@ function bot(data,socket,questionNum) {
 
 /// These are the main statments that make up the conversation.
   if (questionNum == 0) {
-  answer= 'Hello ' + input + ' :-)';// output response
+  answer= 'Sup ' + input + ' :-)';// output response
   waitTime =2000;
-  question = 'How old are you?';			    	// load next question
+  question = 'Congrats on getting a date! Which number is this?'; // load next question
   }
   else if (questionNum == 1) {
-  answer= 'Really ' + input + ' Years old? So that means you where born in: ' + (2018-parseInt(input));// output response
+  answer= 'Really? Date number ' + input + ' is a big one!';// output response
   waitTime =2000;
-  question = 'Where do you live?';			    	// load next question
+  question = 'Where are you going?'; // load next question
   }
   else if (questionNum == 2) {
-  answer= ' Cool! I have never been to ' + input+'.';
+  answer= ' Sweeeeeet. I hear ' + input+' is a great spot.';
   waitTime =2000;
-  question = 'Whats your favorite Color?';			    	// load next question
+  question = "Now all you need is a good line. How nerdy are you on a scale of 1 to 10?" // load next question
   }
   else if (questionNum == 3) {
-  answer= 'Ok, ' + input+' it is.';
-  socket.emit('changeBG',input.toLowerCase());
+  if (input > 5){
+  answer="Nerdy and flirty! I've got a good one for ya: Can I be Windows and crash at your place tonight?"
+  }
+  else{
+  answer="So you're a cool cat. I've got a line for you: Are you a camera? Everytime I look at you, I smile."
+  }
   waitTime = 2000;
-  question = 'Can you still read the font?';			    	// load next question
+  question = 'Do you need another line?'; // load next question
   }
   else if (questionNum == 4) {
     if(input.toLowerCase()==='yes'|| input===1){
-      answer = 'Perfect!';
+      answer = "BroBot's got your back: Are you a 90 degree angle? Cuz you're lookin' right.";
       waitTime =2000;
-      question = 'Whats your favorite place?';
+      question = "Are you feeling ready?";
     }
     else if(input.toLowerCase()==='no'|| input===0){
-        socket.emit('changeFont','white'); /// we really should look up the inverse of what we said befor.
-        answer='How about now?'
-        question='';
+        //socket.emit('changeFont','white');
+        answer='YOU GOT THIS'
+        question='Are you feeling ready now?';
         waitTime =0;
-        questionNum--; // Here we go back in the question number this can end up in a loop
+        //questionNum--; // Here we go back in the question number this can end up in a loop
     }else{
-      answer=' I did not understand you. Can you please answer with simply with yes or no.'
+      answer=" I didn't catch that. Can you please answer with yes or no."
       question='';
       questionNum--;
       waitTime =0;
@@ -92,7 +97,12 @@ function bot(data,socket,questionNum) {
   // load next question
   }
   else{
-    answer= 'I have nothing more to say!';// output response
+    if (input=='no'){
+    answer = "Don't stress amigo. Have a great date!"
+    }
+    else{
+    answer= 'Have a great date!';// output response
+    }
     waitTime =0;
     question = '';
   }
